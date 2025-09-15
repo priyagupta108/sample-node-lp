@@ -20,9 +20,18 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v5
-    # - uses: pnpm/action-setup@v4
-      # with:
-      #   version: 9
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '24'
+    - name: Enable Corepack (for Yarn 4+)
+      run: corepack enable
+
+    - name: Install Yarn 4
+      run: corepack prepare yarn@stable --activate
+
+    - name: Check Yarn version
+      run: yarn --version
     - name: Setup Node.js
       uses: actions/setup-node@v4
       # uses: priya-kinthali/setup-node@final-686
