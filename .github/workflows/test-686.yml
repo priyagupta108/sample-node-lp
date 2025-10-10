@@ -5,47 +5,63 @@ on:
     branches:
       - test-686
   workflow_dispatch:
+# jobs:
+#   build:
+#     strategy:
+#       fail-fast: false
+#       matrix:
+#         # os: [ubuntu-latest, ubuntu-24.04-arm, windows-latest, windows-11-arm, macos-latest, macos-13]
+#         #os: [ubuntu-latest]
+#         os: ['ubuntu-latest','macos-latest','windows-latest']
+
+#         # os: [self-hosted]
+#     runs-on: ${{ matrix.os }}
+   
+#     steps:
+#     - name: Checkout repository
+#       uses: actions/checkout@v5
+#     - name: Set up Node.js
+#       uses: actions/setup-node@v4
+#       with:
+#         node-version: '24'
+#     - name: Enable Corepack (for Yarn 4+)
+#       run: corepack enable
+
+#     - name: Install Yarn 4
+#       run: corepack prepare yarn@4.9.4 --activate
+    
+
+#     - name: Check Yarn version
+#       run: yarn --version
+#     - name: Setup Node.js
+#       uses: actions/setup-node@v4
+#       # uses: priya-kinthali/setup-node@final-686
+#       # uses: priya-kinthali/setup-node@sample-686
+#       # uses: priya-kinthali/setup-node@package-manager-field-caching
+#       with:
+#         node-version: '24'
+#         cache: 'yarn'
+#         # package-manager-cache: false
+#         # cache: 'pnpm'
+#         # cache-dependency-path: subdir/pnpm-lock.yaml
+#         # enable-package-manager-cache: true
+#     # - run: npm ci
+#     # - name: Install dependencies
+#     #   run: npm install
+#     - run: yarn install
 jobs:
-  build:
+  buildonv4:
+    runs-on: ${{ matrix.os}}
     strategy:
       fail-fast: false
       matrix:
-        # os: [ubuntu-latest, ubuntu-24.04-arm, windows-latest, windows-11-arm, macos-latest, macos-13]
-        #os: [ubuntu-latest]
-        os: ['ubuntu-latest','macos-latest','windows-latest']
+        os: ['ubuntu-latest','macos-latest','windows-latest', 'macos-13']
 
-        # os: [self-hosted]
-    runs-on: ${{ matrix.os }}
-   
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v5
-    - name: Set up Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '24'
-    - name: Enable Corepack (for Yarn 4+)
-      run: corepack enable
-
-    - name: Install Yarn 4
-      run: corepack prepare yarn@4.9.4 --activate
-    
-
-    - name: Check Yarn version
-      run: yarn --version
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      # uses: priya-kinthali/setup-node@final-686
-      # uses: priya-kinthali/setup-node@sample-686
-      # uses: priya-kinthali/setup-node@package-manager-field-caching
-      with:
-        node-version: '24'
-        cache: 'yarn'
-        # package-manager-cache: false
-        # cache: 'pnpm'
-        # cache-dependency-path: subdir/pnpm-lock.yaml
-        # enable-package-manager-cache: true
-    # - run: npm ci
-    # - name: Install dependencies
-    #   run: npm install
-    - run: yarn install
+      - name: Setup Checkout
+        uses: actions/checkout@v5
+     
+      - uses: priyagupta108/setup-node@enable-npm-cache-default
+        with:
+          node-version: '24'
+          package-manager-cache: true
